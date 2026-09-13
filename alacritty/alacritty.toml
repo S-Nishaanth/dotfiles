@@ -1,6 +1,6 @@
 [window]
 padding = { x = 15, y = 15 }
-opacity = 0.85
+opacity = 0.60
 
 [colors.primary]
 background = "#1f1f28"
