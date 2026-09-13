@@ -33,8 +33,7 @@ for_window [class="^.*"] border pixel 1
 exec --no-startup-id dex --autostart --environment i3
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
-# they are included here as an example. Modify as you see fit.
-
+# they are included here as an example. Modify as you see fit
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
@@ -173,7 +172,7 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+e exec --no-startup-id ~/.local/bin/powermenu
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -213,6 +212,7 @@ exec --no-startup-id blueman-applet
 for_window [class="Blueman-manager"] floating enable
 for_window [class="Blueman-manager"] resize set 600 400
 for_window [class="Blueman-manager"] move position center
+assign [class="Spotify"] workspace 1
 bindsym XF86MonBrightnessUp exec --no-startup-id /usr/bin/brightnessctl set 5%+
 bindsym XF86MonBrightnessDown exec --no-startup-id /usr/bin/brightnessctl set 5%-
 exec_always --no-startup-id sh -c '[ -r "$HOME/.Xresources" ] && xrdb -merge "$HOME/.Xresources"'
@@ -221,3 +221,12 @@ bindsym XF86AudioNext exec --no-startup-id playerctl next
 bindsym XF86AudioPrev exec --no-startup-id playerctl previous
 bindsym Shift+Print exec --no-startup-id bash -c "scrot -d 1 'screenshot_%Y-%m-%d_%H%M%S.png' -e 'mv \$f ~/Pictures/screenshots/ && xclip -selection clipboard -t image/png < ~/Pictures/screenshots/\$f'"
 bindsym Print exec --no-startup-id bash -c "scrot -s 'screenshot_%Y-%m-%d_%H%M%S.png' -e 'mv \$f ~/Pictures/screenshots/ && xclip -selection clipboard -t image/png < ~/Pictures/screenshots/\$f'"
+bindsym $mod+m exec --no-startup-id ~/.local/bin/launch-spotify
+bindsym $mod+c exec --no-startup-id flatpak run com.ktechpit.whatsie
+#lockscreen
+# Fast manual lock via wrapper
+bindsym $mod+Shift+x exec --no-startup-id betterlockscreen -l
+
+# Instant suspend lock using native binary & cached texture
+#exec_always --no-startup-id xss-lock --transfer-sleep-lock -- i3lock -n -i /home/nishaanth/.cache/betterlockscreen/current/wall_dim.png
+exec_always --no-startup-id xautolock -time 10 -locker "betterlockscreen -l" -detectsleep
